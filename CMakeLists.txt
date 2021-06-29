@@ -13,7 +13,8 @@ project(${PROJECT} LANGUAGES CXX C)
 set(SOURCES 
     main.cpp
     app_loader.h
-    app_loader.cpp)
+    app_loader.cpp
+    app_loader_global.hpp)
 
 add_executable(${PROJECT} ${SOURCES})
 target_link_libraries(${PROJECT})
