@@ -10,7 +10,6 @@ int main(int argc, char **argv, char **env)
     pair<void *, void *> range;
     appLoader->getReservedMemRange(range);
     std::cout << "getReservedArea(): start = 0x" << std::hex << range.first << " , end = 0x" << range.second << std::endl;
-    appLoader->printMappedAreas();
-    while(true);
+    appLoader->printMMappedRanges();
     return 0;
 }

@@ -3,7 +3,7 @@ message(STATUS "Cmake version ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CM
 set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 
 set(BUILD_SHARED_LIBS OFF)
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+# set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 SET(CMAKE_COLOR_MAKEFILE ON)
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -17,4 +17,5 @@ set(SOURCES
     app_loader_global.hpp)
 
 add_executable(${PROJECT} ${SOURCES})
-target_link_libraries(${PROJECT} -static)
+# target_link_libraries(${PROJECT} -static)
+target_link_libraries(${PROJECT})

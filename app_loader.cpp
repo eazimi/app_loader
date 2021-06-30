@@ -8,7 +8,7 @@
 #include <fstream>
 #include <iostream>
 
-void AppLoader::printMappedAreas()
+void AppLoader::printMMappedRanges()
 {
   std::string maps_path = "/proc/self/maps";
   std::filebuf fb;
