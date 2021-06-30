@@ -4,7 +4,23 @@
 #include <limits.h>
 #include <sys/mman.h>
 #include <fcntl.h>
-#include <string.h>
+#include <cstring>
+#include <fstream>
+#include <iostream>
+
+void AppLoader::printMappedAreas()
+{
+  std::string maps_path = "/proc/self/maps";
+  std::filebuf fb;
+  std::string line;
+  if(fb.open(maps_path, std::ios_base::in))
+  {
+    std::istream is(&fb);
+    while (std::getline(is, line))
+      std::cout << line << std::endl; 
+    fb.close();
+  }
+}
 
 void AppLoader::getReservedMemRange(std::pair<void *, void *> &range)
 {
