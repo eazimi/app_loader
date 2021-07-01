@@ -8,16 +8,58 @@
 #include <fstream>
 #include <iostream>
 
+using namespace std;
+
 void AppLoader::printMMappedRanges()
 {
   std::string maps_path = "/proc/self/maps";
   std::filebuf fb;
   std::string line;
-  if(fb.open(maps_path, std::ios_base::in))
+  if (fb.open(maps_path, std::ios_base::in))
   {
     std::istream is(&fb);
     while (std::getline(is, line))
-      std::cout << line << std::endl; 
+      std::cout << line << std::endl;
+    fb.close();
+  }
+}
+
+void AppLoader::memUnmapRanges()
+{
+  const string maps_path = "/proc/self/maps";
+  const string SIMG_LD = "/simg_ld";
+  const string HEAP = "[heap]";
+  const string STACK = "[stack]";
+  const string VVAR = "[vvar]";
+  const string VDSO = "[vdso]";
+  const string VSYSCALL = "[vsyscall]";
+
+  filebuf fb;
+  string line;
+  if (fb.open(maps_path, ios_base::in))
+  {
+    istream is(&fb);
+    bool found = false;
+    while (getline(is, line))
+    {
+      found = (line.find(SIMG_LD) != string::npos) || (line.find(HEAP) != string::npos) || (line.find(STACK) != string::npos) ||
+              (line.find(VVAR) != string::npos) || (line.find(VDSO) != string::npos) || (line.find(VSYSCALL) != string::npos);
+      if (found)
+      {
+        auto addr_range_str = line.substr(0, line.find(" "));
+        auto dash_index = line.find('-');
+        auto start_str = addr_range_str.substr(0, dash_index);
+        auto end_str = addr_range_str.substr(dash_index+1);
+        auto dash_index_last = line.find_last_of(" ");        
+        // cout << "found: " << start_str << ", " << end_str << "    " << line.substr(dash_index_last+1) << endl;
+        start_str += "0x";
+        end_str += "0x";
+        auto start_int = strtol(start_str.c_str(), nullptr , 16);
+        auto end_int = strtol(end_str.c_str(), nullptr, 16);
+        // cout << "address: " << start_int << ", " << end_int << endl;
+        munmap((void *)((unsigned long)start_int), end_int-start_int);
+      }
+    }
     fb.close();
   }
 }
@@ -49,7 +91,7 @@ void AppLoader::getReservedMemRange(std::pair<void *, void *> &range)
     reserved_area->end = (VA)area.addr - _1_GB;
     range.first = reserved_area->start;
     range.second = reserved_area->end;
-  }  
+  }
 }
 
 int AppLoader::readMapsLine(int mapsfd, Area *area)
