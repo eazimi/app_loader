@@ -7,15 +7,15 @@ set(BUILD_SHARED_LIBS OFF)
 SET(CMAKE_COLOR_MAKEFILE ON)
 set(CMAKE_BUILD_TYPE Debug)
 
-set(PROJECT app_loader)
-project(${PROJECT} LANGUAGES CXX C)
+# set(PROJECT app_loader)
+project(app_loader LANGUAGES CXX C)
 
 set(SOURCES 
-    main.cpp
+    app_loader_main.cpp
     app_loader.h
     app_loader.cpp
     app_loader_global.hpp)
 
-add_executable(${PROJECT} ${SOURCES})
+add_executable(app_loader ${SOURCES})
 # target_link_libraries(${PROJECT} -static)
-target_link_libraries(${PROJECT})
+# target_link_libraries(${PROJECT})

@@ -14,8 +14,8 @@ int main(int argc, char **argv, char **env)
     std::cout << "memory layout BEFORE unmmap ..." << std::endl;
     appLoader->printMMappedRanges();
     // do munmap    
-    appLoader->memUnmapRanges();
     std::cout << "memory layout AFTER unmmap ..." << std::endl;
+    appLoader->memUnmapRanges();    
     appLoader->printMMappedRanges();
     raise(SIGINT);
     return 0;

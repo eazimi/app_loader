@@ -54,10 +54,12 @@ void AppLoader::memUnmapRanges()
         // cout << "found: " << start_str << ", " << end_str << "    " << line.substr(dash_index_last+1) << endl;
         start_str += "0x";
         end_str += "0x";
-        auto start_int = strtol(start_str.c_str(), nullptr , 16);
-        auto end_int = strtol(end_str.c_str(), nullptr, 16);
+        auto start_int = strtol(start_str.c_str(), nullptr , 0);
+        auto end_int = strtol(end_str.c_str(), nullptr, 0);
         // cout << "address: " << start_int << ", " << end_int << endl;
-        munmap((void *)((unsigned long)start_int), end_int-start_int);
+        auto ret = munmap((void *)((unsigned long)start_int), (unsigned long)(end_int-start_int));
+        if(ret != 0)
+          cout << "munmap was not successful: " << strerror(errno) << endl;
       }
     }
     fb.close();
